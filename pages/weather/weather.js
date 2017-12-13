@@ -1,4 +1,25 @@
-// pages/t/t.js
+// pages/weather/weather.js
+var cityList = require('cityID.js')
+// 请求天气数据
+var weatherQuery = function() {
+    wx.getStorage({
+        key: 'city',
+        success: function(res) {
+            var city = res.data
+            var list = Object.keys(cityList.cityList)
+            var cityId = cityList.cityList[city]
+            // console.log('cityId',cityId)
+            var options = {
+                url: "http://wthrcdn.etouch.cn/weather_mini?citykey=" + cityId,
+                success: function(e) {
+                    console.log(e)
+                }
+            }
+            // 发送 AJAX
+            wx.request(options)
+        }
+    })
+}
 var options = {
 
     /**
@@ -12,15 +33,48 @@ var options = {
         date: ['今天', '明天', '周三', '周四', '周五'],
         fiveSky: ['晴', '大雨', '小雨', '多云', '暴雨'],
         fiveHigh: ['0', '1', '2', '3', '4'],
-        key: '5TUBZ-A4AWR-EGHWK-WDCWK-4U6EF-KBBKB'
+        BDkey: '0K9j6geaeCRGCEPKytwnpXtA9nPY3G9G',
+        TXkey:'5TUBZ-A4AWR-EGHWK-WDCWK-4U6EF-KBBKB',
+        lat: 0,
+        lon: 0
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function(options) {
-        var loc = wx.getLocation({"success":function(e) {
-            console.log('生命周期-页面加载', e)
+        // 获取经纬度
+        wx.getLocation({"success":function(e) {
+            this.lat = e.latitude
+            this.lon = e.longitude
+            var QQMapWX = require('../../qqmap/qqmap-wx-jssdk.js')//
+            // console.log('dw')
+            var demo = new QQMapWX({
+                key: '5TUBZ-A4AWR-EGHWK-WDCWK-4U6EF-KBBKB'
+            })
+            // 调用接口
+            demo.reverseGeocoder({
+                location: {
+                    latitude: this.lat,
+                    longitude: this.lon
+                },
+                success: function(res) {
+                    var city = res.result.address_component.city
+                    // console.log('success',res)
+                    if (city.includes('市')) {
+                        city = city.slice(0,-1)
+                    }
+                    wx.setStorage({
+                        key: 'city',
+                        data: city
+                    })
+                    // 请求天气数据
+                    weatherQuery()
+                },
+                fail: function(res) {
+                    console.log('fail ',res);
+                },
+            })//
         }})
     },
 
@@ -29,7 +83,6 @@ var options = {
      */
     onReady: function() {
         console.log('生命周期-页面初次渲染完成')
-        this.dw()
     },
 
     /**
@@ -74,14 +127,8 @@ var options = {
         console.log('用户点击右上角分享')
     },
 
-    // 定位
-    dw: function() {
-        var QQMapWX = require('../../qqmap/qqmap-wx-jssdk.js')
-        var demo = new QQMapWX({
-            key: '5TUBZ-A4AWR-EGHWK-WDCWK-4U6EF-KBBKB' // 必填
-        })
-        console.log('dw')
-    }
+
+
 }
 
 Page(options)
