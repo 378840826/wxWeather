@@ -1,0 +1,91 @@
+/* pages/weather/weather.wxss */
+view{
+  color: #fff;
+}
+
+/*背景图片*/
+#bg{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1
+}
+
+.container {
+    width: 100vw;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0
+}
+
+.result {
+    position: absolute;
+    bottom: 3vh;
+    opacity: 0.6; 
+    height: 22%;
+    width: 96vw;
+    padding: 0;
+}
+
+.result span {
+    display: inline-block;
+    width: 20%;
+    text-align:center
+}
+
+/* 头部晴雨  */
+.title_sky {
+    position: absolute;
+    top: 0;
+    right: 50%;
+    transform: translateX(50%);
+    font-size: 1.5rem
+}
+
+.five_sky_image image {
+    width: 100%;
+    height: 100%
+}
+
+.five_date {
+   padding-bottom: 10px
+}
+
+ .five_sky_image span {
+   width: 15vw;
+   height: 15vw
+} 
+.iconImg {
+   width: 15vw;
+   height: 15vw
+}
+
+.wendu {
+    font-size: 4rem;
+    font-weight: lighter
+}
+
+/* 中部温度区域  */
+.middle {
+    top: 20%;
+    position: absolute;
+    left: 0;
+    padding-left: 2rem
+}
+
+.time {
+    color: rgba(255,255,255,0.7);
+    margin-left: 0.5rem
+}
+
+.city {
+    color: rgba(255,255,255,0.7);
+    margin-left: 0.5rem;
+    margin-top: 0.5rem
+}

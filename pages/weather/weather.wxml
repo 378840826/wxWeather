@@ -1,0 +1,43 @@
+<!--weather.wxml-->
+<view class="container">
+    <!-- 临用查询 -->
+    <!-- <view class="">
+        <input type="input" class='input_city_name' value="广州">
+        <button type="button" class="button_query">查询</button>
+    </view> -->
+    <image id='bg' src='img/bg.png'></image>
+    <!-- 头部晴雨 -->
+    <view class="title_sky">{{sky}}</view>
+
+    <!-- 中部温度 -->
+    <view class="middle">
+        <view class="wendu"><span>{{wendu}}</span></view>
+        <view class="time">{{time}}</view>
+        <view class="city">{{city}}</view>
+    </view>
+
+    <!-- 底部预报 -->
+    <view class="result">
+        <view class="five_date">
+            <span>{{date[0]}}</span>
+            <span>{{date[1]}}</span>
+            <span>{{date[2]}}</span>
+            <span>{{date[3]}}</span>
+            <span>{{date[4]}}</span>
+        </view>
+        <view class="five_sky_img">
+            <span><image class='iconImg' src='/img/icon/{{fiveSky[0]}}.png'></image></span>
+            <span><image class='iconImg' src='/img/icon/{{fiveSky[1]}}.png'></image></span>
+            <span><image class='iconImg' src='/img/icon/{{fiveSky[2]}}.png'></image></span>
+            <span><image class='iconImg' src='/img/icon/{{fiveSky[3]}}.png'></image></span>
+            <span><image class='iconImg' src='/img/icon/{{fiveSky[4]}}.png'></image></span>
+        </view>
+        <view class="five_high">
+            <span>{{fiveHigh[0]}}</span>
+            <span>{{fiveHigh[1]}}</span>
+            <span>{{fiveHigh[2]}}</span>
+            <span>{{fiveHigh[3]}}</span>
+            <span>{{fiveHigh[4]}}</span>
+        </view>
+    </view>
+</view>
