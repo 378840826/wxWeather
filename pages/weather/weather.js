@@ -1,25 +1,11 @@
+/*
+1,下拉刷新,提出提示更新
+2,获取数据错误时候弹窗提示
+*/
+
 // pages/weather/weather.js
-var cityList = require('cityID.js')
-// 请求天气数据
-var weatherQuery = function() {
-    wx.getStorage({
-        key: 'city',
-        success: function(res) {
-            var city = res.data
-            var list = Object.keys(cityList.cityList)
-            var cityId = cityList.cityList[city]
-            // console.log('cityId',cityId)
-            var options = {
-                url: "http://wthrcdn.etouch.cn/weather_mini?citykey=" + cityId,
-                success: function(e) {
-                    console.log(e)
-                }
-            }
-            // 发送 AJAX
-            wx.request(options)
-        }
-    })
-}
+var bmap = require('bmap-wx.js')
+
 var options = {
 
     /**
@@ -28,54 +14,47 @@ var options = {
     data: {
         sky: '晴',
         city: '广州',
-        time: '00:00',
+        pm25: '00',
         wendu: '0℃',
-        date: ['今天', '明天', '周三', '周四', '周五'],
-        fiveSky: ['晴', '大雨', '小雨', '多云', '暴雨'],
-        fiveHigh: ['0', '1', '2', '3', '4'],
-        BDkey: '0K9j6geaeCRGCEPKytwnpXtA9nPY3G9G',
-        TXkey:'5TUBZ-A4AWR-EGHWK-WDCWK-4U6EF-KBBKB',
-        lat: 0,
-        lon: 0
+        date: ['今天', '明天', '周三', '周四'],
+        fourSky: ['晴', '大雨', '小雨', '多云'],
+        fourHigh: ['0', '1', '2', '3']
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
-    onLoad: function(options) {
-        // 获取经纬度
-        wx.getLocation({"success":function(e) {
-            this.lat = e.latitude
-            this.lon = e.longitude
-            var QQMapWX = require('../../qqmap/qqmap-wx-jssdk.js')//
-            // console.log('dw')
-            var demo = new QQMapWX({
-                key: '5TUBZ-A4AWR-EGHWK-WDCWK-4U6EF-KBBKB'
+    onLoad: function() {
+        var that = this;
+        var BMap = new bmap.BMapWX({
+            ak: 'UtA8i1Qcb45Wc1EQB4fShgB4F9AdLLNQ'
+        })
+        var fail = function(data) {
+            console.log( 'fail', data)
+            wx.showToast({
+                title: '数据获取失败',
+                icon: 'loading',
+                duration: 3000
             })
-            // 调用接口
-            demo.reverseGeocoder({
-                location: {
-                    latitude: this.lat,
-                    longitude: this.lon
-                },
-                success: function(res) {
-                    var city = res.result.address_component.city
-                    // console.log('success',res)
-                    if (city.includes('市')) {
-                        city = city.slice(0,-1)
-                    }
-                    wx.setStorage({
-                        key: 'city',
-                        data: city
-                    })
-                    // 请求天气数据
-                    weatherQuery()
-                },
-                fail: function(res) {
-                    console.log('fail ',res);
-                },
-            })//
-        }})
+        }
+        var success = function(data) {
+            var fourData = data.originalData.results[0].weather_data
+            console.log('data.currentWeather', data.currentWeather[0].pm25)
+            that.setData({
+                pm25: data.currentWeather[0].pm25,
+                city: data.currentWeather['0'].currentCity,
+                wendu: data.currentWeather['0'].date.split('：')[1].slice(0,-1),
+                sky: data.currentWeather['0'].weatherDesc,
+                date: ['今天', '明天', fourData[2].date, fourData[3].date],
+                fourSky: [fourData[0].weather, fourData[1].weather, fourData[2].weather, fourData[3].weather],
+                fourHigh: [fourData[0].temperature, fourData[1].temperature, fourData[2].temperature, fourData[3].temperature]
+            })
+        }
+
+        BMap.weather({
+            fail: fail,
+            success: success
+        })
     },
 
     /**
@@ -111,6 +90,44 @@ var options = {
      */
     onPullDownRefresh: function() {
         console.log('用户下拉动作')
+        var that = this;
+        var BMap = new bmap.BMapWX({
+            ak: 'UtA8i1Qcb45Wc1EQB4fShgB4F9AdLLNQ'
+        })
+        var fail = function(data) {
+            console.log( 'fail', data)
+            wx.showToast({
+                title: '数据获取失败',
+                icon: 'loading',
+                duration: 3000
+            })
+        }
+        var success = function(data) {
+            var fourData = data.originalData.results[0].weather_data
+            // console.log('data.currentWeather', data.currentWeather[0].pm25)
+            that.setData({
+                pm25: data.currentWeather[0].pm25,
+                city: data.currentWeather['0'].currentCity,
+                wendu: data.currentWeather['0'].date.split('：')[1].slice(0,-1),
+                sky: data.currentWeather['0'].weatherDesc,
+                date: ['今天', '明天', fourData[2].date, fourData[3].date],
+                fourSky: [fourData[0].weather, fourData[1].weather, fourData[2].weather, fourData[3].weather],
+                fourHigh: [fourData[0].temperature, fourData[1].temperature, fourData[2].temperature, fourData[3].temperature]
+            })
+            // 弹窗提示数据更新
+            wx.showToast({
+                title: '更新成功',
+                icon:'success',
+                duration: 1000
+            })
+            // 更新成功后关闭下拉动作
+            wx.stopPullDownRefresh()
+        }
+
+        BMap.weather({
+            fail: fail,
+            success: success
+        })
     },
 
     /**

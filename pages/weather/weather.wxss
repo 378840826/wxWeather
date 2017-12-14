@@ -15,27 +15,27 @@ view{
     z-index: -1
 }
 
-.container {
+/*.container {
     width: 100vw;
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0
-}
+}*/
 
 .result {
     position: absolute;
-    bottom: 3vh;
-    opacity: 0.6; 
-    height: 22%;
-    width: 96vw;
+    bottom: 4vh;
+    opacity: 0.6;
+    height: 20%;
+    width: 100vw;
     padding: 0;
 }
 
 .result span {
     display: inline-block;
-    width: 20%;
+    width: 25%;
     text-align:center
 }
 
@@ -48,19 +48,24 @@ view{
     font-size: 1.5rem
 }
 
-.five_sky_image image {
+.four_sky_image image {
     width: 100%;
     height: 100%
 }
 
-.five_date {
+.four_date {
    padding-bottom: 10px
 }
 
- .five_sky_image span {
+ .four_sky_image span {
    width: 15vw;
    height: 15vw
-} 
+}
+
+.four_high{
+    font-size: 0.8rem
+}
+
 .iconImg {
    width: 15vw;
    height: 15vw
@@ -79,7 +84,7 @@ view{
     padding-left: 2rem
 }
 
-.time {
+.pm25 {
     color: rgba(255,255,255,0.7);
     margin-left: 0.5rem
 }

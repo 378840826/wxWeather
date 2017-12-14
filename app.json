@@ -1,26 +1,28 @@
 {
   "pages":[
-    "pages/weather/weather",
-    "pages/index/index"
+    "pages/index/index",
+    "pages/weather/weather"
   ],
   "window":{
-    "backgroundTextStyle":"light",
-    "navigationBarBackgroundColor": "#000000",
+    "backgroundTextStyle":"dark",
+    "navigationBarBackgroundColor": "#000",
     "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle":"light"
+    "navigationBarTextStyle":"light",
+    "enablePullDownRefresh": true
   },
   "tabBar": {
     "position": "bottom",
+    "selectedColor":"#333",
     "list":[{
         "pagePath": "pages/index/index",
         "text": "首页",
-        "iconPath": "img/icon/首页.png",
-        "selectedIconPath": "img/icon/选中首页.png"
+        "iconPath": "pages/weather/img/icon/首页.png",
+        "selectedIconPath": "pages/weather/img/icon/选中首页.png"
       },{
         "pagePath":"pages/weather/weather",
         "text": "天气",
-        "iconPath":"img/icon/天气.png",
-        "selectedIconPath": "img/icon/选中天气.png"
+        "iconPath":"pages/weather/img/icon/天气.png",
+        "selectedIconPath": "pages/weather/img/icon/选中天气.png"
     }]
   }
 }
